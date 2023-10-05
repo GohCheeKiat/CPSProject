@@ -38,3 +38,8 @@ sudo raspi-config
 4. Finish
    
 sudo reboot
+
+Github References:
+
+https://wiki.seeedstudio.com/Grove-Sound_Sensor/
+https://github.com/MikroElektronika/IR_Grid_click

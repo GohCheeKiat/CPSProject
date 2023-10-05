@@ -27,3 +27,14 @@
 
 
 ## How to Install and Run Our Application (for Users) 🤓 ##
+
+sudo apt update
+sudo apt upgrade
+sudo raspi-config
+
+1. Interface Options > VNC > Enable
+2. System Options > Boot/Auto Login > Desktop Autologin
+3. Display Options > VNC Resolution > 1920 x 1080
+4. Finish
+   
+sudo reboot

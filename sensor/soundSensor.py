@@ -33,6 +33,8 @@ from grove.adc import ADC
 import pymongo 
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+import numpy
+from scipy import stats
 
 __all__ = ['GroveSoundSensor']
 
@@ -87,7 +89,12 @@ def main():
         if time.time() >= next_reset:
             start_time = time.time()
             next_reset = start_time + interval
-            collection.insert_one({"datetime": datetime.now(),"Sound": soundList})
+            # Mean Median Mode Calculation
+            meanSound = numpy.mean(soundList)
+            medianSound = numpy.median(soundList)
+            modeSound = stats.mode(soundList)
+
+            collection.insert_one({"datetime": datetime.now(),"Mean Sound": meanSound, "Median Sound": medianSound, "Mode": modeSound})
             soundList = []
             print("data sent to MongoDB")
         time.sleep(3)

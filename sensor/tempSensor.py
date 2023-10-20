@@ -5,6 +5,8 @@ from datetime import datetime
 from flask import Flask 
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+import numpy
+from scipy import stats
 
 uri = "mongodb+srv://CPSProject:CPSProject@cluster0.ybbw04x.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(uri, server_api=ServerApi('1'))
@@ -31,7 +33,16 @@ while True:
         if time.time() >= next_reset:
                 start_time = time.time()
                 next_reset = start_time + interval
-                collection.insert_one({"datetime": datetime.now(),"temperature": temperatureList, "humidity": humidityList})
+
+                # Mean Median Mode 
+                meanTemperature = numpy.mean(temperatureList)
+                medianTemperature = numpy.median(temperatureList)
+                modeTemperature = stats.mode(temperatureList)
+                meanHumidity = numpy.mean(humidityList)
+                medianHumidity = numpy.median(humidityList)
+                modeHumidity = stats.mode(humidityList)
+
+                collection.insert_one({"datetime": datetime.now(),"meanTemperature": meanTemperature,"medianTemperature": medianTemperature, "modeTemperature": modeTemperature , "meanHumidity": meanHumidity, "medianHumidity": medianHumidity, "modeHumidity": modeHumidity})
                 print("Temperature and Humdity data sent to MongoDB")
                 temperatureList = []
                 humidityList = []

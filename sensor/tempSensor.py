@@ -49,16 +49,16 @@ while True:
 
                 sample_data_temperature = {
                     "datetime": datetime.now(),
-                    "meanTemperature": float(meanTemperature) if meanTemperature is not None else None,
-                    "medianTemperature": float(medianTemperature) if medianTemperature is not None else None,
-                    "modeTemperature": float(modeTemperature) if modeTemperature is not None else None
+                    "meanTemperature": int(meanTemperature) if meanTemperature is not None else None,
+                    "medianTemperature": int(medianTemperature) if medianTemperature is not None else None,
+                    "modeTemperature": int(modeTemperature) if modeTemperature is not None else None
                 }
 
                 sample_data_humidity = {
                     "datetime": datetime.now(),
-                    "meanHumidity": float(meanTemperature) if meanTemperature is not None else None,
-                    "medianHumidity": float(medianTemperature) if medianTemperature is not None else None,
-                    "modeHumidity": float(modeTemperature) if modeTemperature is not None else None
+                    "meanHumidity": int(meanTemperature) if meanTemperature is not None else None,
+                    "medianHumidity": int(medianTemperature) if medianTemperature is not None else None,
+                    "modeHumidity": int(modeTemperature) if modeTemperature is not None else None
                 }
 
 

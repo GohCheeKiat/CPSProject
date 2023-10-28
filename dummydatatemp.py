@@ -10,28 +10,23 @@ from pymongo.mongo_client import MongoClient
 uri = "mongodb+srv://CPSProject:CPSProject@cluster0.ybbw04x.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(uri, server_api=ServerApi('1'))
 db = client['Project']
-collection = db["Sound"]
+# Sound after 1030pm then run 
+collection = db["Temperature"]
 
 # Define function to generate dummy data
 def generate_dummy_data():
     data = {}
     data["timestamp"] = datetime.now()
-    data["meanSound"] = round(random.uniform(0, 150), 2)
-    data["medianSound"] = round(random.uniform(30, 80), 2)
-    data["modeSound"] = round(random.uniform(20, 50), 2)
+    data["meanTemperature"] = round(random.uniform(18, 39), 1)
+    data["medianTemperature"] = round(random.uniform(25, 35), 1)
+    data["modeTemperature"] = round(random.uniform(20, 39), 1)
     return data
-
-print(generate_dummy_data())
 
 # Loop through data and insert into MongoDB every minute
 while True:
-    now = datetime.datetime.now()
-    if now >= datetime.datetime(2023, 10, 20, 0, 0, 0) and now <= datetime.datetime(2023, 10, 20, 23, 59, 59):
+    now = datetime.now()
+    if now >= datetime(2023, 10, 25, 0, 0, 0) and now <= datetime(2023, 10, 25, 23, 59, 59):
         data = generate_dummy_data()
         collection.insert_one(data)
-        time.sleep(60)
-    else:
-        break
-
-# Close connection to MongoDB
-# client.close()
+        print("Inserted data")
+        time.sleep(300)

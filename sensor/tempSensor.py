@@ -28,6 +28,11 @@ while True:
         #print("Temp={0:01f}C Humidity={1:0.1f}%".format(temperature,humidity))
         print("temperature:",temperature)
         print("humidity:", humidity)
+        if temperature == None: 
+            temperature = 0 
+        if humidity == None: 
+            humidity = 0
+
         temperatureList.append(temperature)
         humidityList.append(humidity)
         if time.time() >= next_reset:
@@ -35,14 +40,30 @@ while True:
                 next_reset = start_time + interval
 
                 # Mean Median Mode 
-                meanTemperature = numpy.mean(temperatureList)
-                medianTemperature = numpy.median(temperatureList)
-                modeTemperature = stats.mode(temperatureList)
-                meanHumidity = numpy.mean(humidityList)
-                medianHumidity = numpy.median(humidityList)
-                modeHumidity = stats.mode(humidityList)
+                meanTemperature = round(numpy.mean(temperatureList),1) 
+                medianTemperature = round(numpy.median(temperatureList),1) 
+                modeTemperature = stats.mode(temperatureList).mode 
+                meanHumidity = round(numpy.mean(humidityList),1) 
+                medianHumidity = round(numpy.median(humidityList),1) 
+                modeHumidity = stats.mode(humidityList).mode 
 
-                collection.insert_one({"datetime": datetime.now(),"meanTemperature": meanTemperature,"medianTemperature": medianTemperature, "modeTemperature": modeTemperature , "meanHumidity": meanHumidity, "medianHumidity": medianHumidity, "modeHumidity": modeHumidity})
+                sample_data_temperature = {
+                    "datetime": datetime.now(),
+                    "meanTemperature": int(meanTemperature) if meanTemperature is not None else None,
+                    "medianTemperature": int(medianTemperature) if medianTemperature is not None else None,
+                    "modeTemperature": int(modeTemperature) if modeTemperature is not None else None
+                }
+
+                sample_data_humidity = {
+                    "datetime": datetime.now(),
+                    "meanHumidity": int(meanTemperature) if meanTemperature is not None else None,
+                    "medianHumidity": int(medianTemperature) if medianTemperature is not None else None,
+                    "modeHumidity": int(modeTemperature) if modeTemperature is not None else None
+                }
+
+
+                collection.insert_one(sample_data_temperature)
+                db["Humidity"].insert_one(sample_data_humidity)
                 print("Temperature and Humdity data sent to MongoDB")
                 temperatureList = []
                 humidityList = []

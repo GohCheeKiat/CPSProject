@@ -78,7 +78,7 @@ def main():
     print('Detecting sound...')
     soundList = []
     start_time = time.time()
-    interval = 29 #30 seconds interval
+    interval = 5 #5 seconds interval
     next_reset = start_time + interval
     
     while True:
@@ -93,11 +93,11 @@ def main():
             meanSound = numpy.mean(soundList)
             medianSound = numpy.median(soundList)
             modeSound = stats.mode(soundList)
-
-            collection.insert_one({"datetime": datetime.now(),"Mean Sound": meanSound, "Median Sound": medianSound, "Mode": modeSound})
+            if meanSound != 0 and medianSound != 0 and modeSound != 0 : 
+                collection.insert_one({"datetime": datetime.now(),"Mean Sound": meanSound, "Median Sound": medianSound, "Mode": modeSound})
             soundList = []
             print("data sent to MongoDB")
-        time.sleep(3)
+        time.sleep(300)
     
 
 if __name__ == '__main__':

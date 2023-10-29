@@ -67,7 +67,8 @@ while True:
                 print("Temperature and Humdity data sent to MongoDB")
                 temperatureList = []
                 humidityList = []
+        
     except RuntimeError as error:
         print(error.args[0])
-    time.sleep(5)
+    time.sleep(600)
 

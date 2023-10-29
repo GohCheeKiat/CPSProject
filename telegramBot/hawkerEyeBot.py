@@ -38,18 +38,11 @@ def populate_hawker():
     for hawkers in all_hawker_centers:
         button = types.InlineKeyboardButton(hawkers, callback_data=hawkers)
         markup.add(button)
-    button = types.InlineKeyboardButton("Exit", callback_data="exit")
-    markup.add(button)
     return markup
 
 @bot.message_handler(commands=['start', 'hello'])
 def send_welcome(message):
     bot.send_message(message.chat.id, "Welcome to HawkerEyeBot! Please select a hawker center:", reply_markup=populate_hawker())
-
-# @bot.message_handler(commands=['exit'])
-# def exit(message):
-#     bot.send_message(message.chat.id, "Goodbye!")
-#     bot.stop_polling()
 
 @bot.callback_query_handler(func=lambda call: call.message.text == "Welcome to HawkerEyeBot! Please select a hawker center:")
 def handle_selection(callback_query):

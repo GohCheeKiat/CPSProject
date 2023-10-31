@@ -4,6 +4,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from geopy.geocoders import Nominatim
 import os
+import datetime
 
 #initialise data
 geolocator = Nominatim(user_agent="myGeocoder")
@@ -25,13 +26,14 @@ bot = telebot.TeleBot(BOT_TOKEN)
 channel_id = '-1002123530600'
 
 # ================Hardcoded data================
-sound_level = 10
 latitude = 1.29845948398373  # Hardcoded location coordinates
 longitude = 103.85161150371341
 location_name = ''
 loc_dict = {location_name: [latitude, longitude]}
-threshold = 50  # percentage
-count_events = 0
+
+sound_threshold = 60  # decibel level
+continuous_event_counter = 0
+lastsent_notification_time = 0
 
 # ================Looks for Sound collection in MongoDB================
 db = client.Project
@@ -46,28 +48,36 @@ change_stream = collection.watch()
 # bot.send_location(chat_id=channel_id,latitude=latitude, longitude=longitude)
 
 for change in change_stream:
-    print(change)
+    threshold_count = 0.6 * len(change['fullDocument']['Sound'])
     if 'fullDocument' in change and 'Sound' in change['fullDocument']:
-        #Sound_level = change['fullDocument']['Sound']
-        sound_agg = (
-            sum(1 for value in change['fullDocument']['Sound'] if value > sound_level) / len(change['fullDocument']['Sound'])) * 100
-        if sound_agg > threshold:
-            count_events += 1
-        else:
-            count_events = 0  # reset events
-
-        if count_events == 1:
-            """Get the location name based on latitude and longitude"""
-            location = geolocator.reverse((loc_dict[location_name][0], loc_dict[location_name][1]), exactly_one=True)
-            if location:
-                location_name = location.address
+        # obtain all 60 sound values recorded over the course of 5 minutes and checks if it exceeds threshold
+        exceed_threshold_count = 0
+        for sound_level in change['fullDocument']['Sound']:
+            if sound_level > sound_threshold:
+                exceed_threshold_count += 1
+        
+        if exceed_threshold_count > threshold_count: # if more than 60% of the sound values of one entry is exceeded threshold
+            continuous_event_counter +=1
+            location = geolocator.reverse((loc_dict[location_name][0], loc_dict[location_name][1]), exactly_one=True) # Get the location name based on latitude and longitude
+            location_name = location.address
+            if continuous_event_counter == 1:
                 bot.send_message(chat_id=channel_id, text=f"Detected sound levels over {sound_level}dB \nat the following location: {location_name}")
                 bot.send_location(chat_id=channel_id,latitude=latitude, longitude=longitude)
+                lastsent_notification_time = datetime.datetime.now()
 
-        elif count_events == 10 :
-            """Get the location name based on latitude and longitude"""
-            location = geolocator.reverse((loc_dict[location_name][0], loc_dict[location_name][1]), exactly_one=True)
-            if location:
-                location_name = location.address
-                bot.send_message(chat_id=channel_id, text=f"Reminder to check on high sound levels prolonging 1 min 30 seconds at the following location: {location_name}")
+            elif continuous_event_counter == 2 and (datetime.datetime.now() - lastsent_notification_time).total_seconds() > 600: #send second continuous event at after 15min (20 min elapsed)
+                bot.send_message(chat_id=channel_id, text=f"Detected sound levels over {sound_level}dB \nat the following location: {location_name}")
                 bot.send_location(chat_id=channel_id,latitude=latitude, longitude=longitude)
+                lastsent_notification_time = datetime.datetime.now()
+            
+            elif continuous_event_counter == 3 and (datetime.datetime.now() - lastsent_notification_time).total_seconds() > 900:
+                bot.send_message(chat_id=channel_id, text=f"Detected sound levels over {sound_level}dB \nat the following location: {location_name}")
+                bot.send_location(chat_id=channel_id,latitude=latitude, longitude=longitude)
+                lastsent_notification_time = datetime.datetime.now()
+            
+            elif continuous_event_counter > 4 and (datetime.datetime.now() - lastsent_notification_time).total_seconds() > 1800:
+                bot.send_message(chat_id=channel_id, text=f"Detected sound levels over {sound_level}dB \nat the following location: {location_name}")
+                bot.send_location(chat_id=channel_id,latitude=latitude, longitude=longitude)
+                lastsent_notification_time = datetime.datetime.now()
+        else:
+            continuous_event_counter == 0

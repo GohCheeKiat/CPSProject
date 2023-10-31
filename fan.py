@@ -48,12 +48,16 @@ root.title("Fan Control")
 fan_label = tk.Label(root, text="", font=("Arial", 20))
 fan_label.pack()
 
-# Load fan images (replace these with your actual image files)
-spinning_fan = "./gif/fan-off-image.jpg"
-stopped_fan = "./gif/fan-spinning.gif"
+stopped_fan = "./gif/fan-off-image.jpg"
+spinning_fan = "./gif/fan-spinning.gif"
 
-fan_image_stopped = tk.PhotoImage(stopped_fan)  # Provide the path to your GIF file
-fan_image_spinning = tk.PhotoImage(spinning_fan)  # Provide the path to your GIF file
+# Open and convert the images using PIL
+fan_image_stopped = Image.open(stopped_fan)
+fan_image_spinning = Image.open(spinning_fan)
+
+# Convert PIL images to Tkinter PhotoImage
+fan_image_stopped = ImageTk.PhotoImage(fan_image_stopped)
+fan_image_spinning = ImageTk.PhotoImage(fan_image_spinning)
 
 fan_image_label = tk.Label(root, image=fan_image_stopped)
 fan_image_label.pack()

@@ -65,17 +65,17 @@ for change in change_stream:
                 bot.send_location(chat_id=channel_id,latitude=latitude, longitude=longitude)
                 lastsent_notification_time = datetime.datetime.now()
 
-            elif continuous_event_counter == 2 and (datetime.datetime.now() - lastsent_notification_time).total_seconds() > 600: #send second continuous event at after 15min (20 min elapsed)
+            elif continuous_event_counter <= 3  and (datetime.datetime.now() - lastsent_notification_time).total_seconds() > 600: #send second continuous event at after 15min (20 min elapsed)
                 bot.send_message(chat_id=channel_id, text=f"Detected sound levels over {sound_level}dB \nat the following location: {location_name}")
                 bot.send_location(chat_id=channel_id,latitude=latitude, longitude=longitude)
                 lastsent_notification_time = datetime.datetime.now()
             
-            elif continuous_event_counter == 3 and (datetime.datetime.now() - lastsent_notification_time).total_seconds() > 900:
+            elif continuous_event_counter <= 6 and (datetime.datetime.now() - lastsent_notification_time).total_seconds() > 900:
                 bot.send_message(chat_id=channel_id, text=f"Detected sound levels over {sound_level}dB \nat the following location: {location_name}")
                 bot.send_location(chat_id=channel_id,latitude=latitude, longitude=longitude)
                 lastsent_notification_time = datetime.datetime.now()
             
-            elif continuous_event_counter > 4 and (datetime.datetime.now() - lastsent_notification_time).total_seconds() > 1800:
+            elif continuous_event_counter > 6 and (datetime.datetime.now() - lastsent_notification_time).total_seconds() > 1800:
                 bot.send_message(chat_id=channel_id, text=f"Detected sound levels over {sound_level}dB \nat the following location: {location_name}")
                 bot.send_location(chat_id=channel_id,latitude=latitude, longitude=longitude)
                 lastsent_notification_time = datetime.datetime.now()

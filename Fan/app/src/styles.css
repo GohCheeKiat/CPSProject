@@ -1,0 +1,160 @@
+:root {
+    /* --wing-color: lightsteelblue;
+    --edge-color:blue;
+    --inside-color:black;
+    --circle-color:gainsboro; */
+
+    --wing-color: #74BDCB;
+    --edge-color:#F652A0;
+    --inside-color:#eee299;
+    --circle-color:#FFA384;
+}
+html {
+  font-family: "Euclid Circular A", "Akzidenz", Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.App {
+  font-family: sans-serif;
+}
+
+body{
+  margin: 50px 0 0;
+  background: #d0c9b9;
+}
+
+.fan{
+  margin: 0 auto;
+  background: var(--inside-color);
+}
+.fan-1{
+  z-index: 2;
+  width: 275px;
+  height: 275px;
+  border: 10px solid var(--edge-color);
+  border-radius: 50%;
+}
+
+@keyframes swing{
+  0%{
+    transform: none;
+  }
+  25%{
+    transform: rotate(90deg);
+    transform: translate(25px);
+  }
+  50%{
+    transform: none;
+  }
+  75%{
+    transform: rotate(-90deg);
+    transform: translate(-25px);
+  }
+  100%{
+    transform: none;
+  }
+}
+.core-part{
+  margin: 0 auto;
+  background: var(--circle-color);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: relative;
+  top: 112px;
+  opacity: 1.0;
+  animation-name: rotation;
+  animation-duration: 0.1s;
+  animation-timing-function: liner;
+  animation-iteration-count: infinite;
+  animation-delay: -5s;
+}
+@keyframes rotation{
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+.wing{
+  margin: 0 auto;
+  background: var(--wing-color);
+  width: 30px;
+  height: 100px;
+  border-radius: 5px;
+  position: relative;
+}
+.wing-1{
+  top: 50px;
+  transform: rotate(0deg);
+}
+.wing-2{
+  right: 65px;
+  bottom: 88px;
+  transform: rotate(60deg);
+}
+.wing-3{
+  right: 64px;
+  bottom: 264px;
+  transform: rotate(120deg);
+}
+.wing-4{
+  bottom: 400px;
+  transform: rotate(180deg);
+}
+.wing-5{
+  left: 65px;
+  bottom: 462px;
+  transform: rotate(240deg);
+}
+.wing-6{
+  left: 65px;
+  bottom: 488px;
+  transform: rotate(300deg);
+}
+.fan-2{
+  z-index: 1;
+  width: 50px;
+  height: 140px;
+  border-radius: 5px;
+  border-top: 10px solid var(--edge-color);
+  position: relative;
+  border-bottom: 3px solid dimgray;
+  bottom: 10px;
+}
+.fan-3{
+  width: 250px;
+  height: 60px;
+  border: 5px solid var(--edge-color);
+  border-radius: 20px;
+  position: relative;
+  bottom: 35px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+.display-button {
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 20px;
+  cursor: pointer;
+  border-radius: 16px;
+  font-family: monospace;
+  /* letter-spacing: -1px; */
+}

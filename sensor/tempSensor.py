@@ -10,8 +10,8 @@ from scipy import stats
 
 uri = "mongodb+srv://CPSProject:CPSProject@cluster0.ybbw04x.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(uri, server_api=ServerApi('1'))
-db = client['Project']
-collection = db["Temperature"]
+db = client['Project-2']
+collection = db["Temp"]
 
 DHT_SENSOR = Adafruit_DHT.DHT11
 DHT_PIN = 17
@@ -51,19 +51,22 @@ while True:
                     "datetime": datetime.now(),
                     "meanTemperature": int(meanTemperature) if meanTemperature is not None else None,
                     "medianTemperature": int(medianTemperature) if medianTemperature is not None else None,
-                    "modeTemperature": int(modeTemperature) if modeTemperature is not None else None
-                }
-
-                sample_data_humidity = {
-                    "datetime": datetime.now(),
+                    "modeTemperature": int(modeTemperature) if modeTemperature is not None else None,
                     "meanHumidity": int(meanTemperature) if meanTemperature is not None else None,
                     "medianHumidity": int(medianTemperature) if medianTemperature is not None else None,
                     "modeHumidity": int(modeTemperature) if modeTemperature is not None else None
                 }
 
+                # sample_data_humidity = {
+                #     "datetime": datetime.now(),
+                #     "meanHumidity": int(meanTemperature) if meanTemperature is not None else None,
+                #     "medianHumidity": int(medianTemperature) if medianTemperature is not None else None,
+                #     "modeHumidity": int(modeTemperature) if modeTemperature is not None else None
+                # }
+
 
                 collection.insert_one(sample_data_temperature)
-                db["Humidity"].insert_one(sample_data_humidity)
+                #db["Humidity"].insert_one(sample_data_humidity)
                 print("Temperature and Humdity data sent to MongoDB")
                 temperatureList = []
                 humidityList = []

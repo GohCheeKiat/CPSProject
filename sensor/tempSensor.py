@@ -17,7 +17,7 @@ DHT_SENSOR = Adafruit_DHT.DHT11
 DHT_PIN = 17
 
 start_time = time.time()
-interval = 10 #30 seconds interval
+interval = 10 #10 seconds interval
 next_reset = start_time + interval
 temperatureList = []
 humidityList = []
@@ -73,5 +73,6 @@ while True:
         
     except RuntimeError as error:
         print(error.args[0])
-    time.sleep(600)
+    #time.sleep(600)
+    time.sleep(5) #for demo 
 

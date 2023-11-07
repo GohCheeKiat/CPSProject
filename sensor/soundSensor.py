@@ -40,7 +40,7 @@ __all__ = ['GroveSoundSensor']
 
 uri = "mongodb+srv://CPSProject:CPSProject@cluster0.ybbw04x.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(uri, server_api=ServerApi('1'))
-db = client['Project']
+db = client['Project-2']
 collection = db["Sound"]
 
 class GroveSoundSensor(object):
@@ -97,7 +97,8 @@ def main():
                 collection.insert_one({"datetime": datetime.now(),"Mean Sound": meanSound, "Median Sound": medianSound, "Mode": modeSound})
             soundList = []
             print("data sent to MongoDB")
-        time.sleep(300)
+        #time.sleep(300)
+        time.sleep(10) # for demo 
     
 
 if __name__ == '__main__':

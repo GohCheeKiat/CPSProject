@@ -52,9 +52,9 @@ while True:
                     "meanTemperature": int(meanTemperature) if meanTemperature is not None else None,
                     "medianTemperature": int(medianTemperature) if medianTemperature is not None else None,
                     "modeTemperature": int(modeTemperature) if modeTemperature is not None else None,
-                    "meanHumidity": int(meanTemperature) if meanTemperature is not None else None,
-                    "medianHumidity": int(medianTemperature) if medianTemperature is not None else None,
-                    "modeHumidity": int(modeTemperature) if modeTemperature is not None else None
+                    "meanHumidity": int(meanHumidity) if meanHumidity is not None else None,
+                    "medianHumidity": int(medianHumidity) if medianHumidity is not None else None,
+                    "modeHumidity": int(modeHumidity) if modeHumidity is not None else None
                 }
 
                 # sample_data_humidity = {

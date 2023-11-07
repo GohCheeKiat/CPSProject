@@ -97,9 +97,8 @@ def main():
                 collection.insert_one({"datetime": datetime.now(),"Mean Sound": meanSound, "Median Sound": medianSound, "Mode": modeSound})
             soundList = []
             print("data sent to MongoDB")
-        #time.sleep(300)
-        time.sleep(10) # for demo 
-    
+        time.sleep(300)
+        
 
 if __name__ == '__main__':
     main()
